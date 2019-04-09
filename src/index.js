@@ -31,7 +31,7 @@ const isIgnore = (url, extentions) => {
 
 module.exports = (
   { files, linkPrefix, markdownNode, markdownAST, getNode },
-  pluginOptions = {}
+  pluginOptions = { ignoreFileExtensions: ['.md'] }
 ) => {
   // Copy linked files to the public directory and modify the AST to point to new location of the files.
   const visitor = (link) => {

@@ -96,6 +96,20 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
         expect(FsExtra.copy).not.toHaveBeenCalled()
       })
 
+      test('Ignore: *.md (Default)', async () => {
+        const path = 'sample.md'
+        const markdownAST = remark.parse(`[File](${path})`)
+
+        await Plugin({
+          files: getFiles(path),
+          markdownAST,
+          markdownNode,
+          getNode
+        })
+
+        expect(FsExtra.copy).not.toHaveBeenCalled()
+      })
+
       test('Ignore: *.zip', async () => {
         const path = 'sample.zip'
         const markdownAST = remark.parse(`[File](${path})`)
