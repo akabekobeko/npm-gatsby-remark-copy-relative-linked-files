@@ -49,13 +49,9 @@ it.
 
 `image.gif`, `archive.zip` and `sample.pdf` should be in the same directory as the markdown file. When you build your site, the file will be copied to the public folder and the markdown HTML will be modified to point to it.
 
-The copy target is a relative link. Therefore, links starting with `...://` are excluded. In this example `not-copy.rar` is not copied.
+The copy target is a relative link. Therefore, links starting with `XXXX://` or `//` are ignore. In this example `not-copy.rar` is not copied.
 
 ## Options
-
-### ignoreFileExtensions
-
-Specify the file extension to be excluded from copying.
 
 ```js
 // In your `gatsby-config.js`
@@ -67,8 +63,11 @@ plugins: [
         {
           resolve: 'gatsby-remark-copy-relative-linked-files',
           options: {
-            // With this specification, `*.pdf` and '*.d.ts' will not be copied.
-            ignoreFileExtensions: ['.pdf', '.d.ts']
+            // By default, `.md` is specified
+            // ignoreFileExtensions: ['.md']
+
+            // These files will not be copied
+            ignoreFileExtensions: ['.md', '.pdf', '.d.ts']
           }
         }
       ]
@@ -76,6 +75,8 @@ plugins: [
   }
 ]
 ```
+
+- **ignoreFileExtensions** `string[]` - Specify the file extension to be ignored from copying. This plugin is for `remark` (Markdown), so it specifies `.md` by default.
 
 # ChangeLog
 
