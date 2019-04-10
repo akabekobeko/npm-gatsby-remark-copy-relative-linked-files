@@ -100,12 +100,16 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
         const path = 'sample.md'
         const markdownAST = remark.parse(`[File](${path})`)
 
-        await Plugin({
-          files: getFiles(path),
-          markdownAST,
-          markdownNode,
-          getNode
-        })
+        await Plugin(
+          {
+            files: getFiles(path),
+            markdownAST,
+            markdownNode,
+            getNode
+          },
+          // Default value of GatsbyJS
+          { plugins: [] }
+        )
 
         expect(FsExtra.copy).not.toHaveBeenCalled()
       })

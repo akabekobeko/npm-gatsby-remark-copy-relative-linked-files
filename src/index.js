@@ -29,15 +29,32 @@ const isIgnore = (url, extentions) => {
     : false
 }
 
+/**
+ * Check the collection of file extensions to ignore.
+ * @param {string[]} extensions Collection of file extensions to ignore.
+ * @returns {string[]} Checked collection.
+ */
+const checkIgnoreFileExtensions = (extensions) => {
+  if (Array.isArray(extensions) && 0 < extensions.length) {
+    return extensions
+  }
+
+  // Default
+  return ['.md']
+}
+
 module.exports = (
   { files, linkPrefix, markdownNode, markdownAST, getNode },
-  pluginOptions = { ignoreFileExtensions: ['.md'] }
+  pluginOptions = {}
 ) => {
   // Copy linked files to the public directory and modify the AST to point to new location of the files.
   const visitor = (link) => {
     if (
       isAbsoluteURL(link.url) ||
-      isIgnore(link.url, pluginOptions.ignoreFileExtensions)
+      isIgnore(
+        link.url,
+        checkIgnoreFileExtensions(pluginOptions.ignoreFileExtensions)
+      )
     ) {
       return
     }
