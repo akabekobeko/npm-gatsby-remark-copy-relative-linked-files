@@ -47,6 +47,36 @@ module.exports = (
   { files, linkPrefix, markdownNode, markdownAST, getNode },
   pluginOptions = {}
 ) => {
+
+  // Copy a file, then return its new link URL
+  const copyFile = (relativePath) => {
+    const linkPath = Path.join(getNode(markdownNode.parent).dir, relativePath)
+    const linkNode = files.find((file) => {
+      return file && file.absolutePath ? file.absolutePath === linkPath : false
+    })
+
+    if (!(linkNode && linkNode.absolutePath)) {
+      return relativePath
+    }
+
+    const newPath = Path.join(
+      process.cwd(),
+      'public',
+      `${linkNode.relativePath}`
+    )
+
+    const newLinkUrl = Path.join(linkPrefix || '/', linkNode.relativePath)
+    if (!FsExtra.existsSync(newPath)) {
+      FsExtra.copy(linkPath, newPath, (err) => {
+        if (err) {
+          console.error(`error copying file`, err)
+        }
+      })
+    }
+
+    return newLinkUrl
+  }
+
   // Copy linked files to the public directory and modify the AST to point to new location of the files.
   const visitor = (link) => {
     if (
@@ -59,33 +89,21 @@ module.exports = (
       return
     }
 
-    const linkPath = Path.join(getNode(markdownNode.parent).dir, link.url)
-    const linkNode = files.find((file) => {
-      return file && file.absolutePath ? file.absolutePath === linkPath : false
-    })
-
-    if (!(linkNode && linkNode.absolutePath)) {
-      return
-    }
-
-    const newPath = Path.join(
-      process.cwd(),
-      'public',
-      `${linkNode.relativePath}`
-    )
-
-    link.url = Path.join(linkPrefix || '/', linkNode.relativePath)
-    if (FsExtra.existsSync(newPath)) {
-      return
-    }
-
-    FsExtra.copy(linkPath, newPath, (err) => {
-      if (err) {
-        console.error(`error copying file`, err)
-      }
-    })
+    link.url = copyFile(link.url)
   }
 
   Visit(markdownAST, `image`, (image) => visitor(image))
   Visit(markdownAST, `link`, (link) => visitor(link))
+
+  // Copy additional files requested by a copyfiles manifest.
+  const manifestIndex = markdownAST.children.findIndex(
+    node => node.type === "code" && node.lang === "copyfiles"
+  );
+  if (manifestIndex != -1) {
+    const filesToCopy = markdownAST.children[manifestIndex].value.split('\n').map(s => s.trim());
+    filesToCopy.forEach(filename => copyFile(filename))
+    markdownAST.children = [].concat(
+      markdownAST.children.slice(0, manifestIndex),
+      markdownAST.children.slice(manifestIndex + 1))
+  }
 }
