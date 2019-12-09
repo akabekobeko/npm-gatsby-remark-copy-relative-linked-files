@@ -240,6 +240,57 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
         expect(FsExtra.copy).not.toHaveBeenCalled()
       })
     })
+
+    describe('manifest', () => {
+      test('One file', async () => {
+        const path = 'sample.thumb.jpg'
+        const markdownAST = remark.parse(`\`\`\`copyfiles\n${path}\n\`\`\``)
+
+        await Plugin({
+          files: getFiles(path),
+          markdownAST,
+          markdownNode,
+          getNode
+        })
+
+        expect(FsExtra.copy).toHaveBeenCalled()
+        expect(markdownAST.children.findIndex(
+          node => node.type === "code" && node.lang === "copyfiles"
+        )).toEqual(-1);
+      })
+
+      test('Two files', async () => {
+        const path1 = 'report.css'
+        const path2 = 'diagram.png'
+        const markdownAST = remark.parse(`\`\`\`copyfiles\n${path1}\n${path2}\n\`\`\``)
+
+        await Plugin({
+          files: getFiles(path1).concat(getFiles(path2)),
+          markdownAST,
+          markdownNode,
+          getNode
+        })
+
+        expect(FsExtra.copy).toHaveBeenNthCalledWith(1, path1, expect.anything(), expect.anything())
+        expect(FsExtra.copy).toHaveBeenNthCalledWith(2, path2, expect.anything(), expect.anything())
+      })
+
+      test('Tolerates whitespace', async () => {
+        const path1 = 'report.css'
+        const path2 = 'diagram.png'
+        const markdownAST = remark.parse(`\`\`\`copyfiles\n   ${path1}\n${path2}   \n\`\`\``)
+
+        await Plugin({
+          files: getFiles(path1).concat(getFiles(path2)),
+          markdownAST,
+          markdownNode,
+          getNode
+        })
+
+        expect(FsExtra.copy).toHaveBeenNthCalledWith(1, path1, expect.anything(), expect.anything())
+        expect(FsExtra.copy).toHaveBeenNthCalledWith(2, path2, expect.anything(), expect.anything())
+      })
+    })
   })
 
   // For private API

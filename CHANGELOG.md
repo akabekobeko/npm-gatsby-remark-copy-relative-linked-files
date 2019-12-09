@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v1.0.3
+
+### Features
+
+- A new `copyfiles` code fence allows a Markdown file to declare files to be copied without linking to them directly. This is useful when linking to an HTML file that itself links to additional files that must be copied.
+
 ## v1.0.2
 
 ### Fixes

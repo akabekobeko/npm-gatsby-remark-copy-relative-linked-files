@@ -7,7 +7,7 @@
 
 Copies local files relative linked to/from markdown to your `public` folder with preserve directory structure.
 
-This will copy the files linked relative to all Markdowns like [gatsby-remark-copy-linked-files](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-copy-linked-files) into a public directory structure like [gatsby-remark-copy-images](https://github.com/mojodna/gatsby-remark-copy-images) as it is.
+This will copy the files linked relative to all Markdowns like [gatsby-remark-copy-linked-files](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-copy-linked-files) into a public directory structure like [gatsby-remark-copy-images](https://github.com/mojodna/gatsby-remark-copy-images) as it is. It can also copy additional files requested by the document.
 
 ## Install
 
@@ -29,27 +29,37 @@ plugins: [
 ]
 ```
 
+*Note:* When using the `copyfiles` code fence (see below), `gatsby-remark-copy-relative-linked-files` must appear before general purpose code fence processors like `gatsby-remark-prismjs`.
+
 Then in your Markdown files, simply reference the files.
 
 ### E.g.
 
 ```markdown
----
-title: My awesome blog post
----
+    ---
+    title: My awesome blog post
+    ---
 
-Hey everyone, I just made a sweet files with lots of interesting stuff in
-it.
+    Hey everyone, I just made a sweet files with lots of interesting stuff in
+    it.
 
-- ![](image.gif)
-- [archive.zip](archive.zip)
-- [sample.pdf](sample.pdf)
-- [not-copy.rar](https://example.com/not-copy.rar)
+    - ![](image.gif)
+    - [archive.zip](archive.zip)
+    - [sample.pdf](sample.pdf)
+    - [report.html](report.html)
+    - [not-copy.rar](https://example.com/not-copy.rar)
+
+    ```copyfiles
+    report.css
+    diagram.png
+    ```
 ```
 
-`image.gif`, `archive.zip` and `sample.pdf` should be in the same directory as the markdown file. When you build your site, the file will be copied to the public folder and the markdown HTML will be modified to point to it.
+`image.gif`, `archive.zip`, `sample.pdf` and `report.html` should be in the same directory as the Markdown file. When you build your site, the file will be copied to the public folder and the markdown HTML will be modified to point to it.
 
-The copy target is a relative link. Therefore, links starting with `XXXX://` or `//` are ignore. In this example `not-copy.rar` is not copied.
+Similarly, `report.css` and `diagram.png` should be in the same directory as the Markdown file. In this example, `report.html` has its own internal relative links to these files. `report.html` is not changed in any way. The relative links to the copied files work from the copied location.
+
+The copy target is a relative link. Therefore, links starting with `XXXX://` or `//` are ignored. In this example `not-copy.rar` is not copied.
 
 ## Options
 
