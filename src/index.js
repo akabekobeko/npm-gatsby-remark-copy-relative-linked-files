@@ -1,6 +1,7 @@
 const Visit = require('unist-util-visit')
 const FsExtra = require('fs-extra')
 const Path = require('path')
+const { Parser } = require('htmlparser2')
 
 /**
  * Checks if the specified URL is an absolute path.
@@ -77,23 +78,43 @@ module.exports = (
     return newLinkUrl
   }
 
-  // Copy linked files to the public directory and modify the AST to point to new location of the files.
-  const visitor = (link) => {
+  const copyIfRelativeAndNotIgnored = (path) => {
     if (
-      isAbsoluteURL(link.url) ||
+      isAbsoluteURL(path) ||
       isIgnore(
-        link.url,
+        path,
         checkIgnoreFileExtensions(pluginOptions.ignoreFileExtensions)
       )
     ) {
       return
     }
 
-    link.url = copyFile(link.url)
+    return copyFile(path)
   }
 
-  Visit(markdownAST, `image`, (image) => visitor(image))
-  Visit(markdownAST, `link`, (link) => visitor(link))
+  // Copy linked files to the public directory and modify the AST to point to new location of the files.
+  const imageAndLinkVisitor = (node) => {
+    const newUrl = copyIfRelativeAndNotIgnored(node.url)
+    if (typeof newUrl !== 'undefined') node.url = newUrl
+  }
+
+  Visit(markdownAST, `image`, imageAndLinkVisitor)
+  Visit(markdownAST, `link`, imageAndLinkVisitor) // Copy additional files requested by a copyfiles manifest.
+
+  // For video and audio in HTML or JSX nodes
+  Visit(markdownAST, [`html`, `jsx`], (node) => {
+    const parser = new Parser({
+      onopentag(name, attribs) {
+        if (/video|audio|source/.test(name) && `src` in attribs) {
+          const newSrc = copyIfRelativeAndNotIgnored(attribs.src)
+          if (typeof newSrc !== 'undefined')
+            node.value.replace(new RegExp(attribs.src, 'g'), newSrc)
+        }
+      },
+    })
+    parser.write(node.value)
+    parser.end()
+  })
 
   // Copy additional files requested by a copyfiles manifest.
   const manifestIndex = markdownAST.children.findIndex(
