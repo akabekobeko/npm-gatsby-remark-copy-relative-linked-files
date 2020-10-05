@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "fs-extra": "^7.0.1",
+    "htmlparser2": "^4.1.0",
     "unist-util-visit": "^1.4.0"
   },
   "devDependencies": {
