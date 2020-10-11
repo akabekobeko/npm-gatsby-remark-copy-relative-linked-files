@@ -241,6 +241,47 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
       })
     })
 
+    describe('HTML', () => {
+      test('<video>', async () => {
+        const file = 'sample.mp4'
+        const markdownAST = remark.parse(`<video src="${file}"></video>`)
+        await Plugin({
+          files: getFiles(file),
+          markdownAST,
+          markdownNode,
+          getNode
+        })
+
+        expect(FsExtra.copy).toHaveBeenCalled()
+      })
+
+      test('<source>', async () => {
+        const file = 'sample.mp4'
+        const markdownAST = remark.parse(`<video><source src='sample.mp4' type="video/mp4"></video>`)
+        await Plugin({
+          files: getFiles(file),
+          markdownAST,
+          markdownNode,
+          getNode
+        })
+
+        expect(FsExtra.copy).toHaveBeenCalled()
+      })
+
+      test('<audio>', async () => {
+        const file = 'sample.mp3'
+        const markdownAST = remark.parse(`<audio src="${file}"></video>`)
+        await Plugin({
+          files: getFiles(file),
+          markdownAST,
+          markdownNode,
+          getNode
+        })
+
+        expect(FsExtra.copy).toHaveBeenCalled()
+      })
+    })
+
     describe('manifest', () => {
       test('One file', async () => {
         const path = 'sample.thumb.jpg'
@@ -316,7 +357,6 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
     const isIgnore = Module.__get__('isIgnore')
 
     test('Not igonre', () => {
-      const extensions = ['.pdf']
       expect(isIgnore('sample.pdf')).toBeFalsy()
     })
 
