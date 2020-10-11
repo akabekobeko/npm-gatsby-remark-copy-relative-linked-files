@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v1.1.0
+
+### Features
+
+- Copy video and audio from HTML and JSX [#8](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/pull/8) by [karlhorky](https://github.com/karlhorky)
+
 ## v1.0.3
 
 ### Features
