@@ -23,43 +23,54 @@ plugins: [
   {
     resolve: 'gatsby-transformer-remark',
     options: {
-      plugins: ['gatsby-remark-copy-relative-linked-files']
-    }
-  }
+      plugins: ['gatsby-remark-copy-relative-linked-files'],
+    },
+  },
 ]
 ```
 
-*Note:* When using the `copyfiles` code fence (see below), `gatsby-remark-copy-relative-linked-files` must appear before general purpose code fence processors like `gatsby-remark-prismjs`.
+_Note:_ When using the `copyfiles` code fence (see below), `gatsby-remark-copy-relative-linked-files` must appear before general purpose code fence processors like `gatsby-remark-prismjs`.
 
 Then in your Markdown files, simply reference the files.
 
 ### E.g.
 
-```markdown
-    ---
-    title: My awesome blog post
-    ---
+````markdown
+---
+title: My awesome blog post
+---
 
-    Hey everyone, I just made a sweet files with lots of interesting stuff in
-    it.
+Hey everyone, I just made a sweet files withlots of interesting stuff in
+it.
 
-    - ![](image.gif)
-    - [archive.zip](archive.zip)
-    - [sample.pdf](sample.pdf)
-    - [report.html](report.html)
-    - [not-copy.rar](https://example.com/not-copy.rar)
+- ![](image.gif)
+- [archive.zip](archive.zip)
+- [sample.pdf](sample.pdf)
+- [report.html](report.html)
+- [not-copy.rar](https://example.com/not-copyrar)
 
-    ```copyfiles
-    report.css
-    diagram.png
-    ```
+```copyfiles
+report.css
+diagram.png
 ```
+
+<audio src="sample.mp3" controls></audio>
+<video src="sample.mp4" controls></video>
+<video controls>
+
+  <source src="sample2.mp4" type="video/mp4">
+</video>
+````
 
 `image.gif`, `archive.zip`, `sample.pdf` and `report.html` should be in the same directory as the Markdown file. When you build your site, the file will be copied to the public folder and the markdown HTML will be modified to point to it.
 
 Similarly, `report.css` and `diagram.png` should be in the same directory as the Markdown file. In this example, `report.html` has its own internal relative links to these files. `report.html` is not changed in any way. The relative links to the copied files work from the copied location.
 
 The copy target is a relative link. Therefore, links starting with `XXXX://` or `//` are ignored. In this example `not-copy.rar` is not copied.
+
+**v1.1.0**
+
+[Pull request](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/pull/8) by [karlhorky](https://github.com/karlhorky) also copied the `src` attribute of `<audio>`/`<video>`/`<source>` tag.
 
 ## Options
 
@@ -77,12 +88,12 @@ plugins: [
             // ignoreFileExtensions: ['.md']
 
             // These files will not be copied
-            ignoreFileExtensions: ['.md', '.pdf', '.d.ts']
-          }
-        }
-      ]
-    }
-  }
+            ignoreFileExtensions: ['.md', '.pdf', '.d.ts'],
+          },
+        },
+      ],
+    },
+  },
 ]
 ```
 
