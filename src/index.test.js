@@ -270,7 +270,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
 
       test('<audio>', async () => {
         const file = 'sample.mp3'
-        const markdownAST = remark.parse(`<audio src="${file}"></video>`)
+        const markdownAST = remark.parse(`<audio src="${file}"></audio>`)
         await Plugin({
           files: getFiles(file),
           markdownAST,
