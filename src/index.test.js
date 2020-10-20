@@ -242,6 +242,19 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
     })
 
     describe('HTML', () => {
+      test('<img>', async () => {
+        const file = 'sample.jpg'
+        const markdownAST = remark.parse(`<img src="${file}" />`)
+        await Plugin({
+          files: getFiles(file),
+          markdownAST,
+          markdownNode,
+          getNode
+        })
+
+        expect(FsExtra.copy).toHaveBeenCalled()
+      })
+
       test('<video>', async () => {
         const file = 'sample.mp4'
         const markdownAST = remark.parse(`<video src="${file}"></video>`)
@@ -270,7 +283,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
 
       test('<audio>', async () => {
         const file = 'sample.mp3'
-        const markdownAST = remark.parse(`<audio src="${file}"></video>`)
+        const markdownAST = remark.parse(`<audio src="${file}"></audio>`)
         await Plugin({
           files: getFiles(file),
           markdownAST,
