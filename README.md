@@ -5,9 +5,9 @@
 [![Build Status](https://travis-ci.org/akabekobeko/npm-gatsby-remark-copy-relative-linked-files.svg?branch=master)](https://travis-ci.org/akabekobeko/npm-gatsby-remark-copy-relative-linked-files)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-Copies local files relative linked to/from markdown to your `public` folder with preserve directory structure.
+Copies local files relative linked to/from markdown to your `public` folder, preserving your directory structure.
 
-This will copy the files linked relative to all Markdowns like [gatsby-remark-copy-linked-files](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-copy-linked-files) into a public directory structure like [gatsby-remark-copy-images](https://github.com/mojodna/gatsby-remark-copy-images) as it is. It can also copy additional files requested by the document.
+This will copy the files linked relative to all Markdown files like [gatsby-remark-copy-linked-files](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-copy-linked-files) into a public directory structure like [gatsby-remark-copy-images](https://github.com/mojodna/gatsby-remark-copy-images) as it is. It can also copy additional files requested by the document.
 
 ## Install
 
@@ -40,29 +40,30 @@ Then in your Markdown files, simply reference the files.
 title: My awesome blog post
 ---
 
-Hey everyone, I just made a sweet files withlots of interesting stuff in
-it.
+Hey everyone, here are some sweet files with lots of interesting stuff in them:
 
 - ![](image.gif)
 - [archive.zip](archive.zip)
 - [sample.pdf](sample.pdf)
 - [report.html](report.html)
-- [not-copy.rar](https://example.com/not-copyrar)
+- [not-copy.rar](https://example.com/not-copy.rar)
 
 ```copyfiles
 report.css
 diagram.png
 ```
 
+<img src="sales-growth.png" alt="Diagram of the sales growth" />
+
 <audio src="sample.mp3" controls></audio>
 <video src="sample.mp4" controls></video>
-<video controls>
 
+<video controls>
   <source src="sample2.mp4" type="video/mp4">
 </video>
 ````
 
-`image.gif`, `archive.zip`, `sample.pdf` and `report.html` should be in the same directory as the Markdown file. When you build your site, the file will be copied to the public folder and the markdown HTML will be modified to point to it.
+`image.gif`, `archive.zip`, `sample.pdf` and `report.html` should be in the same directory as the Markdown file. When you build your site, the files will be copied to the public folder and the markdown HTML will be modified to point to it.
 
 Similarly, `report.css` and `diagram.png` should be in the same directory as the Markdown file. In this example, `report.html` has its own internal relative links to these files. `report.html` is not changed in any way. The relative links to the copied files work from the copied location.
 
