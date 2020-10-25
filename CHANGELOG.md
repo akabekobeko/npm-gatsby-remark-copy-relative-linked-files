@@ -1,5 +1,12 @@
 # ChangeLog
 
+## v1.2.0
+
+### Features
+
+- Document HTML/JSX img tags, fix typos [#13](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/pull/13) by [karlhorky](https://github.com/karlhorky)
+- Support `<img />` tags in HTML and JSX [#12](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/pull/12) by [karlhorky](https://github.com/karlhorky)
+
 ## v1.1.0
 
 ### Features
