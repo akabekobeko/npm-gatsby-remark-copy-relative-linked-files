@@ -101,14 +101,23 @@ module.exports = (
   Visit(markdownAST, `image`, imageAndLinkVisitor)
   Visit(markdownAST, `link`, imageAndLinkVisitor) // Copy additional files requested by a copyfiles manifest.
 
-  // For img, video and audio tags in HTML and JSX nodes
+  // For a, img, video and audio tags in HTML and JSX nodes
   Visit(markdownAST, [`html`, `jsx`], (node) => {
     const parser = new Parser({
       onopentag(name, attribs) {
+        let attribValue
+        
         if (/img|video|audio|source/.test(name) && `src` in attribs) {
-          const newSrc = copyIfRelativeAndNotIgnored(attribs.src)
-          if (typeof newSrc !== 'undefined')
-            node.value.replace(new RegExp(attribs.src, 'g'), newSrc)
+          attribValue = attribs.src
+        } else if (/a/.test(name) && `href` in attribs) {
+          attribValue = attribs.href
+        } else {
+          return
+        }
+
+        const newAttribValue = copyIfRelativeAndNotIgnored(attribValue)
+        if (typeof newAttribValue !== 'undefined') {
+          node.value.replace(new RegExp(attribValue, 'g'), newAttribValue)
         }
       },
     })
