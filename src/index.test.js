@@ -242,6 +242,19 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
     })
 
     describe('HTML', () => {
+      test('<a>', async () => {
+        const file = 'sample.svg'
+        const markdownAST = remark.parse(`<a href="${file}">SVG</a>`)
+        await Plugin({
+          files: getFiles(file),
+          markdownAST,
+          markdownNode,
+          getNode
+        })
+
+        expect(FsExtra.copy).toHaveBeenCalled()
+      })
+
       test('<img>', async () => {
         const file = 'sample.jpg'
         const markdownAST = remark.parse(`<img src="${file}" />`)
