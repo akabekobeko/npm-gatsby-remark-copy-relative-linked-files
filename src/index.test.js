@@ -206,7 +206,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
 
         expect(FsExtra.copy).toHaveBeenCalled()
         expect(markdownAST.children[0].children[0].url).toBe(
-          `sample-a1b2c3.jpg`
+          `/sample-a1b2c3.jpg`
         )
       })
 
