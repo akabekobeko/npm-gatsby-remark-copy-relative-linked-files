@@ -48,34 +48,44 @@ module.exports = (
   { files, linkPrefix, markdownNode, markdownAST, getNode },
   pluginOptions = {}
 ) => {
+  const markdownDirectory = getNode(markdownNode.parent).dir
 
   // Copy a file, then return its new link URL
-  const copyFile = (relativePath) => {
-    const linkPath = Path.join(getNode(markdownNode.parent).dir, relativePath)
+  const copyFile = (pathInMarkdown) => {
+    const linkPath = Path.join(markdownDirectory, pathInMarkdown)
     const linkNode = files.find((file) => {
       return file && file.absolutePath ? file.absolutePath === linkPath : false
     })
 
     if (!(linkNode && linkNode.absolutePath)) {
-      return relativePath
+      return pathInMarkdown
     }
 
-    const newPath = Path.join(
-      process.cwd(),
-      'public',
-      `${linkNode.relativePath}`
-    )
+    /** Updated path, relative to `src/pages` */
+    let updatedPath = linkNode.relativePath
 
-    const newLinkUrl = Path.join(linkPrefix || '/', linkNode.relativePath)
-    if (!FsExtra.existsSync(newPath)) {
-      FsExtra.copy(linkPath, newPath, (err) => {
+    if (pluginOptions.filename && pluginOptions.filename instanceof Function) {
+      updatedPath = Path.join(
+        linkNode.relativeDirectory,
+        pluginOptions.filename({
+          name: linkNode.name,
+          hash: linkNode.internal.contentDigest,
+          extension: linkNode.extension,
+        })
+      )
+    }
+
+    const publicPath = Path.join(process.cwd(), 'public', updatedPath)
+
+    if (!FsExtra.existsSync(publicPath)) {
+      FsExtra.copy(linkPath, publicPath, (err) => {
         if (err) {
           console.error(`error copying file`, err)
         }
       })
     }
 
-    return newLinkUrl
+    return Path.join(linkPrefix || '/', updatedPath)
   }
 
   const copyIfRelativeAndNotIgnored = (path) => {
@@ -106,7 +116,7 @@ module.exports = (
     const parser = new Parser({
       onopentag(name, attribs) {
         let attribValue
-        
+
         if (/img|video|audio|source/.test(name) && `src` in attribs) {
           attribValue = attribs.src
         } else if (/a/.test(name) && `href` in attribs) {
@@ -127,13 +137,16 @@ module.exports = (
 
   // Copy additional files requested by a copyfiles manifest.
   const manifestIndex = markdownAST.children.findIndex(
-    node => node.type === "code" && node.lang === "copyfiles"
-  );
+    (node) => node.type === 'code' && node.lang === 'copyfiles'
+  )
   if (manifestIndex != -1) {
-    const filesToCopy = markdownAST.children[manifestIndex].value.split('\n').map(s => s.trim());
-    filesToCopy.forEach(filename => copyFile(filename))
+    const filesToCopy = markdownAST.children[manifestIndex].value
+      .split('\n')
+      .map((s) => s.trim())
+    filesToCopy.forEach((filename) => copyFile(filename))
     markdownAST.children = [].concat(
       markdownAST.children.slice(0, manifestIndex),
-      markdownAST.children.slice(manifestIndex + 1))
+      markdownAST.children.slice(manifestIndex + 1)
+    )
   }
 }
