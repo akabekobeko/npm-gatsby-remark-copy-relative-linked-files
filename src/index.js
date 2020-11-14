@@ -127,7 +127,10 @@ module.exports = (
 
         const newAttribValue = copyIfRelativeAndNotIgnored(attribValue)
         if (typeof newAttribValue !== 'undefined') {
-          node.value.replace(new RegExp(attribValue, 'g'), newAttribValue)
+          node.value = node.value.replace(
+            new RegExp(attribValue, 'g'),
+            newAttribValue
+          )
         }
       },
     })
