@@ -35,6 +35,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
       {
         absolutePath: Path.posix.normalize(filePath),
         relativePath: filePath,
+        relativeDirectory: Path.dirname(filePath),
         internal: { contentDigest: 'a1b2c3' },
         extension: filePath.split(`.`).pop().trim(),
       },
