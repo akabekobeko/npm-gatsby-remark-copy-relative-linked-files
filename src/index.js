@@ -48,7 +48,6 @@ module.exports = (
   { files, linkPrefix, markdownNode, markdownAST, getNode },
   pluginOptions = {}
 ) => {
-
   // Copy a file, then return its new link URL
   const copyFile = (relativePath) => {
     const linkPath = Path.join(getNode(markdownNode.parent).dir, relativePath)
@@ -106,9 +105,11 @@ module.exports = (
     const parser = new Parser({
       onopentag(name, attribs) {
         let attribValue
-        
+
         if (/img|video|audio|source/.test(name) && `src` in attribs) {
           attribValue = attribs.src
+        } else if (/video/.test(name) && `poster` in attribs) {
+          attribValue = attribs.poster
         } else if (/a/.test(name) && `href` in attribs) {
           attribValue = attribs.href
         } else {
@@ -127,13 +128,16 @@ module.exports = (
 
   // Copy additional files requested by a copyfiles manifest.
   const manifestIndex = markdownAST.children.findIndex(
-    node => node.type === "code" && node.lang === "copyfiles"
-  );
+    (node) => node.type === 'code' && node.lang === 'copyfiles'
+  )
   if (manifestIndex != -1) {
-    const filesToCopy = markdownAST.children[manifestIndex].value.split('\n').map(s => s.trim());
-    filesToCopy.forEach(filename => copyFile(filename))
+    const filesToCopy = markdownAST.children[manifestIndex].value
+      .split('\n')
+      .map((s) => s.trim())
+    filesToCopy.forEach((filename) => copyFile(filename))
     markdownAST.children = [].concat(
       markdownAST.children.slice(0, manifestIndex),
-      markdownAST.children.slice(manifestIndex + 1))
+      markdownAST.children.slice(manifestIndex + 1)
+    )
   }
 }

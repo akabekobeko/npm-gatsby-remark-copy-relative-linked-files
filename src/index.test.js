@@ -2,7 +2,7 @@ jest.mock(`fs-extra`, () => {
   return {
     existsSync: () => false,
     copy: jest.fn(),
-    ensureDir: jest.fn()
+    ensureDir: jest.fn(),
   }
 })
 
@@ -17,18 +17,18 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
     const remark = Remark().data('settings', {
       commonmark: true,
       footnotes: true,
-      pedantic: true
+      pedantic: true,
     })
 
     const markdownNode = {
-      parent: {}
+      parent: {},
     }
     const getNode = () => {
       return {
         dir: ``,
         internal: {
-          type: `File`
-        }
+          type: `File`,
+        },
       }
     }
     const getFiles = (filePath) => [
@@ -36,11 +36,8 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
         absolutePath: Path.posix.normalize(filePath),
         relativePath: filePath,
         internal: {},
-        extension: filePath
-          .split(`.`)
-          .pop()
-          .trim()
-      }
+        extension: filePath.split(`.`).pop().trim(),
+      },
     ]
 
     afterEach(() => {
@@ -56,7 +53,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
           files: getFiles(path),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
         })
 
         expect(FsExtra.copy).toHaveBeenCalled()
@@ -73,7 +70,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
           markdownAST,
           markdownNode,
           getNode,
-          linkPrefix
+          linkPrefix,
         })
 
         expect(FsExtra.copy).toHaveBeenCalled()
@@ -90,7 +87,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
           files: getFiles(path),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
         })
 
         expect(FsExtra.copy).not.toHaveBeenCalled()
@@ -105,7 +102,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
             files: getFiles(path),
             markdownAST,
             markdownNode,
-            getNode
+            getNode,
           },
           // Default value of GatsbyJS
           { plugins: [] }
@@ -123,10 +120,10 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
             files: getFiles(path),
             markdownAST,
             markdownNode,
-            getNode
+            getNode,
           },
           {
-            ignoreFileExtensions: ['.zip']
+            ignoreFileExtensions: ['.zip'],
           }
         )
 
@@ -142,10 +139,10 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
             files: getFiles(path),
             markdownAST,
             markdownNode,
-            getNode
+            getNode,
           },
           {
-            ignoreFileExtensions: ['.d.ts']
+            ignoreFileExtensions: ['.d.ts'],
           }
         )
 
@@ -162,7 +159,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
           files: getFiles(path),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
         })
 
         expect(FsExtra.copy).toHaveBeenCalled()
@@ -179,7 +176,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
           markdownAST,
           markdownNode,
           getNode,
-          linkPrefix
+          linkPrefix,
         })
 
         expect(FsExtra.copy).toHaveBeenCalled()
@@ -196,7 +193,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
           files: getFiles(path),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
         })
 
         expect(FsExtra.copy).not.toHaveBeenCalled()
@@ -211,10 +208,10 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
             files: getFiles(path),
             markdownAST,
             markdownNode,
-            getNode
+            getNode,
           },
           {
-            ignoreFileExtensions: ['.jpg']
+            ignoreFileExtensions: ['.jpg'],
           }
         )
 
@@ -230,10 +227,10 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
             files: getFiles(path),
             markdownAST,
             markdownNode,
-            getNode
+            getNode,
           },
           {
-            ignoreFileExtensions: ['.thumb.jpg']
+            ignoreFileExtensions: ['.thumb.jpg'],
           }
         )
 
@@ -249,7 +246,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
           files: getFiles(file),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
         })
 
         expect(FsExtra.copy).toHaveBeenCalled()
@@ -262,7 +259,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
           files: getFiles(file),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
         })
 
         expect(FsExtra.copy).toHaveBeenCalled()
@@ -275,7 +272,20 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
           files: getFiles(file),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
+        })
+
+        expect(FsExtra.copy).toHaveBeenCalled()
+      })
+
+      test('<video poster>', async () => {
+        const file = 'sample.gif'
+        const markdownAST = remark.parse(`<video poster="${file}"></video>`)
+        await Plugin({
+          files: getFiles(file),
+          markdownAST,
+          markdownNode,
+          getNode,
         })
 
         expect(FsExtra.copy).toHaveBeenCalled()
@@ -283,12 +293,14 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
 
       test('<source>', async () => {
         const file = 'sample.mp4'
-        const markdownAST = remark.parse(`<video><source src='sample.mp4' type="video/mp4"></video>`)
+        const markdownAST = remark.parse(
+          `<video><source src='sample.mp4' type="video/mp4"></video>`
+        )
         await Plugin({
           files: getFiles(file),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
         })
 
         expect(FsExtra.copy).toHaveBeenCalled()
@@ -301,7 +313,7 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
           files: getFiles(file),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
         })
 
         expect(FsExtra.copy).toHaveBeenCalled()
@@ -317,45 +329,71 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
           files: getFiles(path),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
         })
 
         expect(FsExtra.copy).toHaveBeenCalled()
-        expect(markdownAST.children.findIndex(
-          node => node.type === "code" && node.lang === "copyfiles"
-        )).toEqual(-1);
+        expect(
+          markdownAST.children.findIndex(
+            (node) => node.type === 'code' && node.lang === 'copyfiles'
+          )
+        ).toEqual(-1)
       })
 
       test('Two files', async () => {
         const path1 = 'report.css'
         const path2 = 'diagram.png'
-        const markdownAST = remark.parse(`\`\`\`copyfiles\n${path1}\n${path2}\n\`\`\``)
+        const markdownAST = remark.parse(
+          `\`\`\`copyfiles\n${path1}\n${path2}\n\`\`\``
+        )
 
         await Plugin({
           files: getFiles(path1).concat(getFiles(path2)),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
         })
 
-        expect(FsExtra.copy).toHaveBeenNthCalledWith(1, path1, expect.anything(), expect.anything())
-        expect(FsExtra.copy).toHaveBeenNthCalledWith(2, path2, expect.anything(), expect.anything())
+        expect(FsExtra.copy).toHaveBeenNthCalledWith(
+          1,
+          path1,
+          expect.anything(),
+          expect.anything()
+        )
+        expect(FsExtra.copy).toHaveBeenNthCalledWith(
+          2,
+          path2,
+          expect.anything(),
+          expect.anything()
+        )
       })
 
       test('Tolerates whitespace', async () => {
         const path1 = 'report.css'
         const path2 = 'diagram.png'
-        const markdownAST = remark.parse(`\`\`\`copyfiles\n   ${path1}\n${path2}   \n\`\`\``)
+        const markdownAST = remark.parse(
+          `\`\`\`copyfiles\n   ${path1}\n${path2}   \n\`\`\``
+        )
 
         await Plugin({
           files: getFiles(path1).concat(getFiles(path2)),
           markdownAST,
           markdownNode,
-          getNode
+          getNode,
         })
 
-        expect(FsExtra.copy).toHaveBeenNthCalledWith(1, path1, expect.anything(), expect.anything())
-        expect(FsExtra.copy).toHaveBeenNthCalledWith(2, path2, expect.anything(), expect.anything())
+        expect(FsExtra.copy).toHaveBeenNthCalledWith(
+          1,
+          path1,
+          expect.anything(),
+          expect.anything()
+        )
+        expect(FsExtra.copy).toHaveBeenNthCalledWith(
+          2,
+          path2,
+          expect.anything(),
+          expect.anything()
+        )
       })
     })
   })
