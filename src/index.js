@@ -119,6 +119,8 @@ module.exports = (
 
         if (/img|video|audio|source/.test(name) && `src` in attribs) {
           attribValue = attribs.src
+        } else if (/video/.test(name) && `poster` in attribs) {
+          attribValue = attribs.poster
         } else if (/a/.test(name) && `href` in attribs) {
           attribValue = attribs.href
         } else {
