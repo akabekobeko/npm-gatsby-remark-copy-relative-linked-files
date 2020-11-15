@@ -48,33 +48,44 @@ module.exports = (
   { files, linkPrefix, markdownNode, markdownAST, getNode },
   pluginOptions = {}
 ) => {
+  const markdownDirectory = getNode(markdownNode.parent).dir
+
   // Copy a file, then return its new link URL
-  const copyFile = (relativePath) => {
-    const linkPath = Path.join(getNode(markdownNode.parent).dir, relativePath)
+  const copyFile = (pathInMarkdown) => {
+    const linkPath = Path.join(markdownDirectory, pathInMarkdown)
     const linkNode = files.find((file) => {
       return file && file.absolutePath ? file.absolutePath === linkPath : false
     })
 
     if (!(linkNode && linkNode.absolutePath)) {
-      return relativePath
+      return pathInMarkdown
     }
 
-    const newPath = Path.join(
-      process.cwd(),
-      'public',
-      `${linkNode.relativePath}`
-    )
+    /** Updated path, relative to `src/pages` */
+    let updatedPath = linkNode.relativePath
 
-    const newLinkUrl = Path.join(linkPrefix || '/', linkNode.relativePath)
-    if (!FsExtra.existsSync(newPath)) {
-      FsExtra.copy(linkPath, newPath, (err) => {
+    if (pluginOptions.filename && pluginOptions.filename instanceof Function) {
+      updatedPath = Path.join(
+        linkNode.relativeDirectory,
+        pluginOptions.filename({
+          name: linkNode.name,
+          hash: linkNode.internal.contentDigest,
+          extension: linkNode.extension,
+        })
+      )
+    }
+
+    const publicPath = Path.join(process.cwd(), 'public', updatedPath)
+
+    if (!FsExtra.existsSync(publicPath)) {
+      FsExtra.copy(linkPath, publicPath, (err) => {
         if (err) {
           console.error(`error copying file`, err)
         }
       })
     }
 
-    return newLinkUrl
+    return Path.join(linkPrefix || '/', updatedPath)
   }
 
   const copyIfRelativeAndNotIgnored = (path) => {
@@ -118,7 +129,10 @@ module.exports = (
 
         const newAttribValue = copyIfRelativeAndNotIgnored(attribValue)
         if (typeof newAttribValue !== 'undefined') {
-          node.value = node.value.replace(new RegExp(attribValue, 'g'), newAttribValue)
+          node.value = node.value.replace(
+            new RegExp(attribValue, 'g'),
+            newAttribValue
+          )
         }
       },
     })

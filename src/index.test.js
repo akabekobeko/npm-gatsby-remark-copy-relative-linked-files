@@ -35,7 +35,9 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
       {
         absolutePath: Path.posix.normalize(filePath),
         relativePath: filePath,
-        internal: {},
+        name: filePath.split('.').shift().trim(),
+        relativeDirectory: Path.dirname(filePath),
+        internal: { contentDigest: 'a1b2c3' },
         extension: filePath.split(`.`).pop().trim(),
       },
     ]
@@ -185,6 +187,29 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
         )
       })
 
+      test('Copy with filename function', async () => {
+        const path = 'sample.jpg'
+        const markdownAST = remark.parse(`![Image](${path})`)
+
+        await Plugin(
+          {
+            files: getFiles(path),
+            markdownAST,
+            markdownNode,
+            getNode,
+          },
+          {
+            filename: ({ name, hash, extension }) =>
+              `${name}-${hash}.${extension}`,
+          }
+        )
+
+        expect(FsExtra.copy).toHaveBeenCalled()
+        expect(markdownAST.children[0].children[0].url).toBe(
+          `/sample-a1b2c3.jpg`
+        )
+      })
+
       test('Not copy (Absolute URL)', async () => {
         const path = 'https://exapmle.com/sample.jpg'
         const markdownAST = remark.parse(`![Image](${path})`)
@@ -268,19 +293,6 @@ describe('gatsby-remark-copy-relative-linked-files', () => {
       test('<video>', async () => {
         const file = 'sample.mp4'
         const markdownAST = remark.parse(`<video src="${file}"></video>`)
-        await Plugin({
-          files: getFiles(file),
-          markdownAST,
-          markdownNode,
-          getNode,
-        })
-
-        expect(FsExtra.copy).toHaveBeenCalled()
-      })
-
-      test('<video poster>', async () => {
-        const file = 'sample.gif'
-        const markdownAST = remark.parse(`<video poster="${file}"></video>`)
         await Plugin({
           files: getFiles(file),
           markdownAST,
