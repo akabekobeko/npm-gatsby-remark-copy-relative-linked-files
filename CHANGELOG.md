@@ -1,5 +1,17 @@
 # ChangeLog
 
+## v1.3.0
+
+### Features
+
+- Add support for `<a href="...">` in HTML / JSX [#16](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/pull/16) by [karlhorky](https://github.com/karlhorky)
+- Add support for video poster attribute [#17](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/pull/17) by [karlhorky](https://github.com/karlhorky)
+- Add filename function option [#19](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/pull/19) by [karlhorky](https://github.com/karlhorky)
+
+### Fixes
+
+- Reassign value with result of replace [#18](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/pull/18) by [karlhorky](https://github.com/karlhorky)
+
 ## v1.2.0
 
 ### Features
