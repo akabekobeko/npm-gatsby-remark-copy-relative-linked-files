@@ -56,11 +56,13 @@ diagram.png
 <img src="sales-growth.png" alt="Diagram of the sales growth" />
 
 <audio src="sample.mp3" controls></audio>
-<video src="sample.mp4" controls></video>
+<video src="sample.mp4" poster="thumbnail.jpg" controls></video>
 
 <video controls>
   <source src="sample2.mp4" type="video/mp4">
 </video>
+
+<a href="sample.svg">SVG Image</a>
 ````
 
 `image.gif`, `archive.zip`, `sample.pdf` and `report.html` should be in the same directory as the Markdown file. When you build your site, the files will be copied to the public folder and the markdown HTML will be modified to point to it.
@@ -68,6 +70,10 @@ diagram.png
 Similarly, `report.css` and `diagram.png` should be in the same directory as the Markdown file. In this example, `report.html` has its own internal relative links to these files. `report.html` is not changed in any way. The relative links to the copied files work from the copied location.
 
 The copy target is a relative link. Therefore, links starting with `XXXX://` or `//` are ignored. In this example `not-copy.rar` is not copied.
+
+**v1.3.0**
+
+[Pull request](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/pull/8) by [karlhorky](https://github.com/karlhorky) also copied the `href` attribute of `<a>` tag, and `poster` attribute of `<video>` tag.
 
 **v1.1.0**
 
@@ -87,9 +93,12 @@ plugins: [
           options: {
             // By default, `.md` is specified
             // ignoreFileExtensions: ['.md']
-
+            //
             // These files will not be copied
             ignoreFileExtensions: ['.md', '.pdf', '.d.ts'],
+
+            // Would generate file-1abcb33beeb811dca15f0ac3e47b88d9.pdf
+            filename: ({hash, name, extension}) => `${name}-${hash}.${extension}`
           },
         },
       ],
@@ -99,6 +108,8 @@ plugins: [
 ```
 
 - **ignoreFileExtensions** `string[]` - Specify the file extension to be ignored from copying. This plugin is for `remark` (Markdown), so it specifies `.md` by default.
+- **filename** `(hash: string, name: string, extension: string) => string` - Can control the file name as you like. See [#15](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/issues/15) for details.
+
 
 # ChangeLog
 
