@@ -2,7 +2,8 @@
 
 [![Support Node of LTS](https://img.shields.io/badge/node-LTS-brightgreen.svg)](https://nodejs.org/)
 [![npm version](https://badge.fury.io/js/gatsby-remark-copy-relative-linked-files.svg)](https://badge.fury.io/js/gatsby-remark-copy-relative-linked-files)
-[![Build Status](https://travis-ci.org/akabekobeko/npm-gatsby-remark-copy-relative-linked-files.svg?branch=master)](https://travis-ci.org/akabekobeko/npm-gatsby-remark-copy-relative-linked-files)
+![test](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/workflows/test/badge.svg)
+[![Actions Status: test](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/workflows/test/badge.svg)](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/actions?query=CI)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 Copies local files relative linked to/from markdown to your `public` folder, preserving your directory structure.
@@ -98,7 +99,8 @@ plugins: [
             ignoreFileExtensions: ['.md', '.pdf', '.d.ts'],
 
             // Would generate file-1abcb33beeb811dca15f0ac3e47b88d9.pdf
-            filename: ({hash, name, extension}) => `${name}-${hash}.${extension}`
+            filename: ({ hash, name, extension }) =>
+              `${name}-${hash}.${extension}`,
           },
         },
       ],
@@ -109,7 +111,6 @@ plugins: [
 
 - **ignoreFileExtensions** `string[]` - Specify the file extension to be ignored from copying. This plugin is for `remark` (Markdown), so it specifies `.md` by default.
 - **filename** `(hash: string, name: string, extension: string) => string` - Can control the file name as you like. See [#15](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/issues/15) for details.
-
 
 # ChangeLog
 
