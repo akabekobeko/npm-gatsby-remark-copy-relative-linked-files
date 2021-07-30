@@ -7,7 +7,10 @@
   "engines": {
     "node": ">= 10"
   },
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "gatsby",
     "gatsby-plugin",
@@ -24,9 +27,10 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "babel src --out-dir . --ignore **/*.test.js",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir . --ignore **/*.test.js"
+    "test:debug": "jest --silent=false --verbose false",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "watch": "tsc -w"
   },
   "dependencies": {
     "fs-extra": "^10.0.0",
@@ -34,15 +38,12 @@
     "unist-util-visit": "^2.0.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.14.8",
-    "@babel/core": "^7.14.8",
-    "@babel/preset-env": "^7.14.8",
-    "cross-env": "^7.0.3",
+    "@types/fs-extra": "^9.0.12",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.4.6",
     "jest": "^27.0.6",
     "remark": "^13.0.0",
-    "rewire": "^5.0.0"
-  },
-  "jest": {
-    "verbose": true
+    "ts-jest": "^27.0.4",
+    "typescript": "^4.3.5"
   }
 }
