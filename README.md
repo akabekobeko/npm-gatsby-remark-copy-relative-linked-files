@@ -2,7 +2,6 @@
 
 [![Support Node of LTS](https://img.shields.io/badge/node-LTS-brightgreen.svg)](https://nodejs.org/)
 [![npm version](https://badge.fury.io/js/gatsby-remark-copy-relative-linked-files.svg)](https://badge.fury.io/js/gatsby-remark-copy-relative-linked-files)
-![test](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/workflows/test/badge.svg)
 [![Actions Status: test](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/workflows/test/badge.svg)](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/actions?query=CI)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
