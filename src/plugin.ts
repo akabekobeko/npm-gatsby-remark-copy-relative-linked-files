@@ -1,6 +1,6 @@
 import visit from 'unist-util-visit'
 import fsExtra from 'fs-extra'
-import path from 'path'
+import path from 'upath'
 import { Parser } from 'htmlparser2'
 
 /** Parameters of the callback function `filename`. */
