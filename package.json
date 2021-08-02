@@ -1,11 +1,11 @@
 {
   "name": "gatsby-remark-copy-relative-linked-files",
   "description": "Copies local files relative linked to/from markdown to your public folder with preserve directory structure.",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "akabeko (http://akabeko.me/)",
   "license": "MIT",
   "engines": {
-    "node": ">= 10"
+    "node": ">= 12"
   },
   "main": "dist/index.js",
   "files": [
