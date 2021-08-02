@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v1.4.0
+
+### Fixes
+
+- Windows cannot handle paths properly [#27](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/issues/27)
+
 ## v1.3.0
 
 ### Features
