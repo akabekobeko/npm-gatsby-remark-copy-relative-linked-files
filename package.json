@@ -1,11 +1,11 @@
 {
   "name": "gatsby-remark-copy-relative-linked-files",
   "description": "Copies local files relative linked to/from markdown to your public folder with preserve directory structure.",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "author": "akabeko (http://akabeko.me/)",
   "license": "MIT",
   "engines": {
-    "node": ">= 12"
+    "node": ">= 14.15.0"
   },
   "main": "dist/index.js",
   "files": [
@@ -32,19 +32,22 @@
     "prepare": "npm run build",
     "watch": "tsc -w"
   },
+  "peerDependencies": {
+    "gatsby": "^4.0.0"
+  },
   "dependencies": {
     "fs-extra": "^10.0.0",
-    "htmlparser2": "^6.1.0",
+    "htmlparser2": "^7.2.0",
     "unist-util-visit": "^2.0.3",
     "upath": "^2.0.1"
   },
   "devDependencies": {
-    "@types/fs-extra": "^9.0.12",
-    "@types/jest": "^26.0.24",
-    "@types/node": "^16.4.6",
-    "jest": "^27.0.6",
+    "@types/fs-extra": "^9.0.13",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.10",
+    "jest": "^27.3.1",
     "remark": "^13.0.0",
-    "ts-jest": "^27.0.4",
-    "typescript": "^4.3.5"
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.5.2"
   }
 }
