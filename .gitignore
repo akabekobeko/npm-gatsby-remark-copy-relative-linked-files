@@ -61,5 +61,4 @@ typings/
 .next
 
 dist/
-!babel.config.js
 package-lock.json
