@@ -1,5 +1,15 @@
 # ChangeLog
 
+## v1.5.0
+
+### Features
+
+- Gatsby v4 Support [#34](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/issues/34)
+
+### Fixes
+
+- Make compatible with Gatsby v4 [#37](https://github.com/akabekobeko/npm-gatsby-remark-copy-relative-linked-files/pull/37) by [karlhorky](https://github.com/karlhorky)
+
 ## v1.4.0
 
 ### Fixes
