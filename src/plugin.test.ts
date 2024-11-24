@@ -1,17 +1,20 @@
+import { describe, test, afterEach, expect, vi } from 'vitest'
 import path from 'path'
 import fsExtra from 'fs-extra'
 import markdownParser from 'remark'
 import { plugin, isAbsoluteURL, isIgnore } from './plugin'
 
-jest.mock(`fs-extra`, () => {
+vi.mock(import(`fs-extra`), async (importOriginal) => {
+  const mod = await importOriginal()
   return {
+    ...mod,
     existsSync: () => false,
-    copy: jest.fn(),
-    ensureDir: jest.fn(),
+    copy: vi.fn(),
+    ensureDir: vi.fn(),
   }
 })
 
-const mockedCopy = fsExtra.copy as jest.MockedFunction<typeof fsExtra.copy>
+const mockedCopy = vi.spyOn(fsExtra, 'copy')
 
 describe('Plugin', () => {
   const remark = markdownParser().data('settings', {
