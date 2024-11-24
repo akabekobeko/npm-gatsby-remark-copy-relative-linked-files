@@ -27,7 +27,6 @@
   },
   "scripts": {
     "test": "vitest",
-    "test:debug": "vitest --silent=false --verbose false",
     "build": "tsc",
     "prepare": "npm run build",
     "watch": "tsc -w"
