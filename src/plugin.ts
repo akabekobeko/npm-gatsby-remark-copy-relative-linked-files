@@ -1,4 +1,4 @@
-import visit from 'unist-util-visit'
+import { visit } from 'unist-util-visit'
 import fsExtra from 'fs-extra'
 import path from 'upath'
 import { Parser } from 'htmlparser2'
