@@ -37,7 +37,7 @@
   "dependencies": {
     "fs-extra": "^11.2.0",
     "htmlparser2": "^9.1.0",
-    "unist-util-visit": "^5.0.0",
+    "unist-util-visit": "^2.0.3",
     "upath": "^2.0.1"
   },
   "devDependencies": {
