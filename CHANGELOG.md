@@ -1,5 +1,12 @@
 # ChangeLog
 
+## v2.0.0
+
+### Breaking changes
+
+- Support Gatsby v5.14.0
+- Support for Node.js v18 and above
+
 ## v1.5.0
 
 ### Features
