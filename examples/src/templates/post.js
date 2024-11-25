@@ -1,5 +1,4 @@
 import React from "react"
-import PropTypes from "prop-types"
 import { Helmet } from "react-helmet"
 import { graphql } from "gatsby"
 import Header from "../components/header.js"
@@ -30,11 +29,6 @@ const Template = ({ data, pageContext }) => {
       </div>
     </div>
   )
-}
-
-Template.propTypes = {
-  data: PropTypes.object,
-  pageContext: PropTypes.object,
 }
 
 export const pageQuery = graphql`

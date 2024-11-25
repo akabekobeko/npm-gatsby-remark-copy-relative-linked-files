@@ -1,5 +1,4 @@
 import React from "react"
-import PropTypes from "prop-types"
 import { graphql } from "gatsby"
 import Header from "../components/header.js"
 
@@ -17,10 +16,6 @@ const NotFoundPage = ({ data }) => (
     </div>
   </div>
 )
-
-NotFoundPage.propTypes = {
-  data: PropTypes.object,
-}
 
 export default NotFoundPage
 
